@@ -10,39 +10,45 @@ import (
 	"path/filepath"
 )
 
-func copyFilePath(srcDir string, dstDir string, fileName string) {
+// CopyFilePath used
+func CopyFilePath(srcDir string, dstDir string, fileName string) {
 	srcFilePath := filepath.Join(srcDir, fileName)
 	destFilePath := filepath.Join(dstDir, fileName)
-	err := copyFile(srcFilePath, destFilePath)
-	check(err)
+	err := CopyFile(srcFilePath, destFilePath)
+	Check(err)
 }
 
-func copyDirPath(srcDir string, destDir string, dirName string) {
+// CopyDirPath used
+func CopyDirPath(srcDir string, destDir string, dirName string) {
 	srcDirPath := filepath.Join(srcDir, dirName)
 	destDirPath := filepath.Join(destDir, dirName)
 	err := CopyDir(srcDirPath, destDirPath)
-	check(err)
+	Check(err)
 }
 
-func runBashCommand(args ...string) {
+// RunBashCommand used
+func RunBashCommand(args ...string) {
 	name := args[0]
 	cmd := exec.Command(name, args[1:]...)
 
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
-	check(err)
+	Check(err)
 }
-func check(err error) {
+
+// Check used
+func Check(err error) {
 	if err != nil {
 		log.Println("Error : ", err.Error())
 		os.Exit(1)
 	}
 }
 
+// CopyFile used
 // File copies a single file from src to dst
 // https://blog.depado.eu/post/copy-files-and-directories-in-go
-func copyFile(src, dst string) error {
+func CopyFile(src, dst string) error {
 	var err error
 	var srcfd *os.File
 	var dstfd *os.File
@@ -95,7 +101,7 @@ func CopyDir(src string, dst string) error {
 				log.Println(err)
 			}
 		} else {
-			if err = copyFile(srcfp, dstfp); err != nil {
+			if err = CopyFile(srcfp, dstfp); err != nil {
 				log.Println(err)
 			}
 		}
